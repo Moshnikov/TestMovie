@@ -1,4 +1,5 @@
 <?php
+if (!defined("INDEX_ACCESS")) exit("Нельзя запустить скрипт" . __FILE__);
 
 class Router {
 
@@ -12,7 +13,8 @@ class Router {
         $controllerName = Router::kDefaultControllerName;
         $actionName = Router::kDefaultActionName;
 
-        $routes = explode('/', $_SERVER['REQUEST_URI']);
+        $uriPath = explode('?', $_SERVER['REQUEST_URI']);
+        $routes = explode('/', $uriPath[0]);
 
         if ( !empty($routes[Router::kControllerNameIndex]) ) {
             $controllerName = strtolower($routes[Router::kControllerNameIndex]);
@@ -23,35 +25,37 @@ class Router {
         }
 
         $modelFullName = ucfirst($controllerName).'Model';
-        $modelFilePath = "application/models/".$modelFullName.".php";
+        $modelFilePath = Config::PATH_MODELS.$modelFullName.".php";
 
         if (file_exists($modelFilePath)) {
             require_once $modelFilePath;
         }
 
         $controllerFullName = ucfirst($controllerName).'Controller';
-        $controllerFilePath = "application/controllers/".$controllerFullName.".php";
+        $controllerFilePath = Config::PATH_CONTROLLERS.$controllerFullName.".php";
 
         if (file_exists($controllerFilePath)) {
             require_once $controllerFilePath;
         } else {
-            Router::showPage404();
+            echo "controller";
+//            Router::showPage404();
         }
 
         $controller = new $controllerFullName;
-        $action = "action_".$actionName;
+        $action = "action".ucfirst($actionName);
 
         if (method_exists($controller, $action)) {
             $controller->$action();
         } else {
-            Router::showPage404();
+            echo "action";
+//            Router::showPage404();
         }
     }
 
     static function showPage404() {
         $host = 'http://'.$_SERVER['HTTP_HOST'].'/';
-        header('HTTP/1.1 404 Not Found');
-        header("Status: 404 Not Found");
+//        header('HTTP/1.1 404 Not Found');
+//        header("Status: 404 Not Found");
         header('Location:'.$host.'error/404');
     }
 }

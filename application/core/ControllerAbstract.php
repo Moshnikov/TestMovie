@@ -1,14 +1,15 @@
 <?php
+if (!defined("INDEX_ACCESS")) exit("Нельзя запустить скрипт" . __FILE__);
 
 abstract class ControllerAbstract {
 
     public $model;
     public $view;
 
-    function __construct() {
+    public function __construct() {
 
         $this->view = new View();
     }
-    function action_index(){}
 
+    public function actionIndex() {}
 }
