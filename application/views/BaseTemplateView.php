@@ -22,8 +22,8 @@
                     <h3>Основное меню</h3>
                     <ul class="list">
                         <li class="first "><a href="/">Список фильмов</a></li>
-                        <li><a href="add">Добавить фильм</a></li>
-                        <li class="last"><a href="/">Импорт фильмов</a></li>
+                        <li><a href="/add">Добавить фильм</a></li>
+                        <li class="last"><a href="/import">Импорт фильмов</a></li>
                     </ul>
                 </div>
             </div>

@@ -8,7 +8,7 @@ class MainModel extends ModelAbstract {
     }
 
     public function getMoviesBySearch($searchStr) {
-        return$this->service->getMovieBySearch($searchStr);
+        return $this->service->getMovieBySearch($searchStr);
     }
 }
 

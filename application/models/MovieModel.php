@@ -1,6 +1,5 @@
 <?php
 if (!defined("INDEX_ACCESS")) exit("Нельзя запустить скрипт" . __FILE__);
-require_once 'application/core/DataBaseHelper.php';
 
 class MovieModel extends ModelAbstract{
 

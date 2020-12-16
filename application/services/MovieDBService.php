@@ -15,25 +15,35 @@ class MovieDBService {
     }
 
     public function getMovieBySearch($searchStr) {
-        $queryResult = $this->dbConnection->query("SELECT * FROM `movies` WHERE `title` LIKE '$searchStr' OR `stars` LIKE '$searchStr'");
+        $queryResult = $this->dbConnection->query("SELECT * FROM `movies` WHERE `title` LIKE '%".$this->dbConnection->real_escape_string($searchStr)."%' OR `stars` LIKE '%".$this->dbConnection->real_escape_string($searchStr)."%'");
         return $this->createMoviesFromRawData($queryResult->fetch_all());
     }
 
     public function addMovie($movie) {
-        $this->dbConnection->query("INSERT INTO `movies` (`id`, `title`, `release year`, `format`, `stars`) VALUES (NULL, '".$movie->title."', '".$movie->releaseYear."', '".$movie->format."', '".$movie->stars."');");
+        $this->dbConnection->query("INSERT INTO `movies` (`id`, `title`, `release year`, `format`, `stars`) VALUES (NULL, '".$this->dbConnection->real_escape_string($movie->title)."', '".$this->dbConnection->real_escape_string($movie->releaseYear)."', '".$this->dbConnection->real_escape_string($movie->format)."', '".$this->dbConnection->real_escape_string($movie->stars)."');");
+        return $this->dbConnection->insert_id;
+    }
+
+     public function addMovies($movies) {
+        $query = "INSERT INTO `movies` (`id`, `title`, `release year`, `format`, `stars`) VALUES ";
+        foreach ($movies as $movie) {
+            $query .= "(NULL, '".$this->dbConnection->real_escape_string($movie->title)."', '".$this->dbConnection->real_escape_string($movie->releaseYear)."', '".$this->dbConnection->real_escape_string($movie->format)."', '".$this->dbConnection->real_escape_string($movie->stars)."'), ";
+        }
+
+        $this->dbConnection->query(substr($query, 0, -2));
         return $this->dbConnection->insert_id;
     }
 
     public function getMovieById($id) {
-        $queryResult = $this->dbConnection->query("SELECT * FROM `movies` WHERE `id` = '$id'");
+        $queryResult = $this->dbConnection->query("SELECT * FROM `movies` WHERE `id` = '".$this->dbConnection->real_escape_string($id)."'");
         return $this->createMovieFromRawData($queryResult->fetch_array());
     }
 
     public function deleteMovieById($id) {
-        return $this->dbConnection->query("DELETE FROM `movies` WHERE `id` = '$id'");
+        return $this->dbConnection->query("DELETE FROM `movies` WHERE `id` = '".$this->dbConnection->real_escape_string($id)."'");
     }
 
-    private function createMovieFromRawData($rawData) {
+    public function createMovieFromRawData($rawData) {
         return new Movie($rawData[0], $rawData[1], $rawData[2], $rawData[3], $rawData[4]);
     }
 

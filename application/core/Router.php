@@ -37,8 +37,7 @@ class Router {
         if (file_exists($controllerFilePath)) {
             require_once $controllerFilePath;
         } else {
-            echo "controller";
-//            Router::showPage404();
+            Router::showPage404();
         }
 
         $controller = new $controllerFullName;
@@ -47,15 +46,12 @@ class Router {
         if (method_exists($controller, $action)) {
             $controller->$action();
         } else {
-            echo "action";
-//            Router::showPage404();
+            Router::showPage404();
         }
     }
 
     static function showPage404() {
         $host = 'http://'.$_SERVER['HTTP_HOST'].'/';
-//        header('HTTP/1.1 404 Not Found');
-//        header("Status: 404 Not Found");
         header('Location:'.$host.'error/404');
     }
 }
