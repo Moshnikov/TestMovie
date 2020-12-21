@@ -14,7 +14,11 @@ if (!defined("INDEX_ACCESS")) exit("Нельзя запустить скрипт
      }
 
      function actionSearch() {
-        $movies = $this->model->getMoviesBySearch($_POST["search"]);
+        $movies = $this->model->getMoviesBySearch(htmlspecialchars($_POST["search"]));
+        if ($movies){
         $this->view->generate("MainView.php", Config::BASE_TEMPLATE_VIEW, $movies);
+        } else {
+            echo "По вашему запросу фильмы и актеры ненайденны!";
+         }
      }
  }

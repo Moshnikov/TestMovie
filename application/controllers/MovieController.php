@@ -9,12 +9,12 @@ class MovieController extends ControllerAbstract {
     }
 
     function actionIndex() {
-        $movie = $this->model->getMovieById($_GET["id"]);
+        $movie = $this->model->getMovieById(intval($_GET["id"]));
         $this->view->generate("MovieView.php", Config::BASE_TEMPLATE_VIEW, $movie);
     }
 
     public function actionDelete() {
-        if ($movie = $this->model->delMovieById($_GET["id"])) {
+        if ($movie = $this->model->delMovieById(intval($_GET["id"]))) {
             header("Location: /");
         }
     }

@@ -16,13 +16,17 @@ class AddController extends ControllerAbstract {
     }
 
     public function actionNew() {
-        $movie = new Movie(NULL, $_POST["title"], $_POST["releaseYear"], $_POST["format"], $_POST["stars"]);
+        $movie = new Movie(NULL,
+            htmlspecialchars($_POST["title"]),
+            htmlspecialchars($_POST["releaseYear"]),
+            htmlspecialchars($_POST["format"]),
+            htmlspecialchars($_POST["stars"]));
         $movieId = $this->model->addMovie($movie);
 
         if ($movieId != 0) {
             header("Location: /");
         } else {
-            echo "warning";
+            echo "Внимание: Такой фильм уже существует в каталоге!";
         }
     }
 }

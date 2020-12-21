@@ -31,8 +31,13 @@ class MovieDBService {
         }
 
         $this->dbConnection->query(substr($query, 0, -2));
+        echo "<pre>";
+        print_r($this->dbConnection);
+        echo "</pre>";
         return $this->dbConnection->insert_id;
-    }
+     }
+
+
 
     public function getMovieById($id) {
         $queryResult = $this->dbConnection->query("SELECT * FROM `movies` WHERE `id` = '".$this->dbConnection->real_escape_string($id)."'");
